@@ -11,4 +11,8 @@
     <dimen name="time_width">96dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="padding_text">4dp</dimen>
+
+    <dimen name="button_corner_radius">10dp</dimen>
+    <dimen name="button_horizontal_margin">4dp</dimen>
+
 </resources>

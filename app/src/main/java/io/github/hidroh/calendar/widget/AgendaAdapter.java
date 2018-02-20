@@ -14,8 +14,10 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +41,10 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
     private static final int VIEW_TYPE_HEADER = 0;
     private static final int VIEW_TYPE_CONTENT = 1;
     private static final int MONTH_SIZE = 31;
-    @VisibleForTesting static final int BLOCK_SIZE = MONTH_SIZE;
-    @VisibleForTesting static final int MAX_SIZE = MONTH_SIZE * 3;
+    @VisibleForTesting
+    static final int BLOCK_SIZE = MONTH_SIZE;
+    @VisibleForTesting
+    static final int MAX_SIZE = MONTH_SIZE * 3;
 
     private final EventGroup.EventObserver mEventObserver = new EventGroup.EventObserver() {
         @Override
@@ -57,6 +61,8 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
     private int mColors[];
     private Weather mWeather;
     private boolean mLock;
+
+    private static final String LOG_TAG = AgendaAdapter.class.getSimpleName();
 
     public AgendaAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -125,7 +131,8 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
      * start and end within the day,
      * or starts before and end within of after the day
      * {@link #bindEvents(long, EventCursor)} should be called afterwards with results
-     * @param timeMillis    time in millis that represents day in agenda
+     *
+     * @param timeMillis time in millis that represents day in agenda
      * @see {@link #bindEvents(long, EventCursor)}
      */
     protected void loadEvents(long timeMillis) {
@@ -137,8 +144,9 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
      * start and end within the day,
      * or starts before and end within of after the day.
      * Bound cursor should be deactivated via {@link #deactivate()} when appropriate
-     * @param timeMillis    time in millis that represents day in agenda
-     * @param cursor        {@link CalendarContract.Events} cursor wrapper
+     *
+     * @param timeMillis time in millis that represents day in agenda
+     * @param cursor     {@link CalendarContract.Events} cursor wrapper
      * @see {@link #loadEvents(long)}
      * @see {@link #deactivate()}
      */
@@ -161,6 +169,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
      * Closes bound cursors and unregisters their observers
      * that have been previously bound by {@link #bindEvents(long, EventCursor)},
      * wipes all adapter data
+     *
      * @see {@link #bindEvents(long, EventCursor)}
      */
     void deactivate() {
@@ -171,6 +180,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
      * Closes bound cursors and unregisters their observers
      * that have been previously bound by {@link #bindEvents(long, EventCursor)},
      * but keeps adapter data to rebind new cursors
+     *
      * @see {@link #bindEvents(long, EventCursor)}
      */
     void invalidate() {
@@ -180,7 +190,8 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
 
     /**
      * Saves this adapter state
-     * @return  saved state
+     *
+     * @return saved state
      * @see {@link #restoreState(Bundle)}
      */
     Bundle saveState() {
@@ -191,7 +202,8 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
 
     /**
      * Restores adapter's previously saved state
-     * @param savedState    saved state
+     *
+     * @param savedState saved state
      * @see {@link #saveState()}
      */
     void restoreState(Bundle savedState) {
@@ -204,9 +216,10 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
     /**
      * Gets adapter position for given day, prepends or appends days
      * to the list if out of range
-     * @param context       resources provider
-     * @param timeMillis    time in milliseconds representing given day
-     * @return  adapter position or {@link RecyclerView#NO_POSITION} if not a valid day (no time)
+     *
+     * @param context    resources provider
+     * @param timeMillis time in milliseconds representing given day
+     * @return adapter position or {@link RecyclerView#NO_POSITION} if not a valid day (no time)
      */
     int getPosition(Context context, long timeMillis) {
         if (timeMillis < mEventGroups.get(0).mTimeMillis) {
@@ -227,8 +240,9 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
 
     /**
      * Gets {@link AdapterItem} at given position
-     * @param position    adapter position
-     * @return  an {@link EventGroup} or {@link EventItem}
+     *
+     * @param position adapter position
+     * @return an {@link EventGroup} or {@link EventItem}
      */
     AdapterItem getAdapterItem(int position) {
         return mEventGroups.getGroupOrItem(position);
@@ -238,7 +252,8 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
      * Adds days to beginning of this adapter data set
      * Added days should immediately precede current adapter days.
      * Last days in adapter may be pruned to keep its size constantly small.
-     * @param context    resources provider
+     *
+     * @param context resources provider
      * @see {@link #append(Context)}
      */
     void prepend(Context context) {
@@ -258,7 +273,8 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
      * Adds days to end of this adapter data set
      * Added days should immediately succeed current adapter days.
      * First days in adapter may be pruned to keep its size constantly small.
-     * @param context    resources provider
+     *
+     * @param context resources provider
      * @see {@link #prepend(Context)}
      */
     void append(Context context) {
@@ -287,6 +303,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
      * Temporarily locks view holder binding until {@link #unlockBinding()} is called.
      * This can be used in case {@link RecyclerView} is being scrolled and binding
      * needs to be disabled temporarily to prevent scroll offset changes
+     *
      * @see {@link #unlockBinding()}
      */
     void lockBinding() {
@@ -296,6 +313,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
     /**
      * Unlocks view holder binding that may have been previously locked by {@link #lockBinding()},
      * notifying adapter to rebind view holders as a result
+     *
      * @see {@link #loadEvents(long)}
      */
     void unlockBinding() {
@@ -305,7 +323,8 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
 
     /**
      * Sets weather information to be displayed
-     * @param weather    weather information to be displayed, or null to disable
+     *
+     * @param weather weather information to be displayed, or null to disable
      */
     void setWeather(@Nullable Weather weather) {
         mWeather = weather;
@@ -478,17 +497,28 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
         }
     }
 
-    static class ContentViewHolder extends RowViewHolder {
+    static class ContentViewHolder extends RowViewHolder implements View.OnClickListener {
 
         final TextView textViewTitle;
         final TextView textViewTime;
         final View background;
+
+        final AppCompatButton button;
 
         public ContentViewHolder(View itemView) {
             super(itemView);
             textViewTitle = (TextView) itemView.findViewById(R.id.text_view_title);
             textViewTime = (TextView) itemView.findViewById(R.id.text_view_time);
             background = itemView.findViewById(R.id.background);
+
+            button = (AppCompatButton) itemView.findViewById(R.id.button);
+            button.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d(LOG_TAG, "AgendaAdapter content button clicked!");
+            // TODO Implemente click here?
         }
     }
 

@@ -55,4 +55,12 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="ContentButton" parent="Widget.AppCompat.Button">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginRight">@dimen/button_horizontal_margin</item>
+        <item name="android:layout_marginLeft">@dimen/button_horizontal_margin</item>
+        <item name="android:background">@drawable/selector_button_background</item>
+        <item name="android:textColor">@color/button_text</item>
+    </style>
+
 </resources>
