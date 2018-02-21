@@ -38,6 +38,7 @@
     <string name="calendars">Calendars</string>
     <string name="error_location">Unable to determine your location</string>
 
-    <string name="list_item_event_button_text">BUTTON</string>
+    <string name="list_item_event_button_accept_text">ACCEPT</string>
+    <string name="list_item_event_button_decline_text">DECLINE</string>
 
 </resources>

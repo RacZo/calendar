@@ -511,7 +511,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
             textViewTime = (TextView) itemView.findViewById(R.id.text_view_time);
             background = itemView.findViewById(R.id.background);
 
-            button = (AppCompatButton) itemView.findViewById(R.id.button);
+            button = (AppCompatButton) itemView.findViewById(R.id.decline_button);
             button.setOnClickListener(this);
         }
 

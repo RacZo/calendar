@@ -14,6 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:addStatesFromChildren="true"
         android:background="?attr/selectableItemBackground">
 
         <TextView
@@ -34,12 +35,12 @@
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true"
             android:layout_alignWithParentIfMissing="true"
+            android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/text_view_time"
-            android:layout_toLeftOf="@+id/button"
+            android:layout_toLeftOf="@+id/button_layout"
             android:layout_toRightOf="@+id/text_view_time"
-            android:layout_toStartOf="@+id/button"
+            android:layout_toStartOf="@+id/button_layout"
             android:gravity="center_vertical"
             android:paddingEnd="@dimen/horizontal_padding"
             android:paddingLeft="@dimen/horizontal_padding"
@@ -47,16 +48,34 @@
             android:paddingStart="@dimen/horizontal_padding"
             tools:text="Event" />
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/button"
-            style="@style/ContentButton"
+        <LinearLayout
+            android:id="@+id/button_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="@string/list_item_event_button_text"
-            tools:text="BUTTON" />
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/accept_button"
+                style="@style/ContentButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/list_item_event_button_accept_text" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/decline_button"
+                style="@style/ContentButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/list_item_event_button_decline_text" />
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 
