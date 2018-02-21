@@ -11,4 +11,5 @@
     <color name="colorDivider">#1F000000</color>
     <color name="black">#000000</color>
     <color name="button_red">#FF0001</color>
+    <color name="button_ripple">#000000</color>
 </resources>
